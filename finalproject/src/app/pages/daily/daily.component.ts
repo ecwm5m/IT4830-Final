@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { AppService } from "../app.services";
 
 @Component({
   selector:'app-daily',
@@ -6,6 +7,13 @@ import { Component } from "@angular/core";
   styleUrls: ['../../../styles.css']
 })
 
-export class DailyComponent{
+export class DailyComponent implements OnInit{
+  message: any;
 
+  constructor(public appService: AppService){}
+
+  ngOnInit()
+  {
+    this.message = this.appService.getPosts();
+  }
 }
