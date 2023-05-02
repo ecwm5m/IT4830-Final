@@ -12,6 +12,11 @@ import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import { PostCreateComponent } from './post/post-create/post-create.component';
+import { AppRoutingModule } from './app-routing.module';
+import { RouterModule, Routes } from '@angular/router';
+import { StartComponent } from './pages/start/start.component';
+
 
 @NgModule({
   declarations: [
@@ -19,14 +24,17 @@ import {MatIconModule} from '@angular/material/icon';
     DailyComponent,
     WeeklyComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    PostCreateComponent,
+    StartComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
