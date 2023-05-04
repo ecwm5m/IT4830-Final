@@ -7,6 +7,7 @@ import { WeeklyComponent } from './pages/weekly/weekly.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },
+  { path: 'start', component: StartComponent },
   { path: 'weekly', component: WeeklyComponent },
   { path: 'daily', component: DailyComponent }
 ];
