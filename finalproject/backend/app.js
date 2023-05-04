@@ -1,42 +1,113 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const port = 3000
+// const express = require('express');
+import express from 'express';
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose')
+const app = express();
 
-const PostModel = require('./Models/post')
+import bodyParser from 'body-parser';
 
-mongoose.connect("mongodb+srv://Group15:<IT4830>@finalcluster.lolpfr7.mongodb.net/?retryWrites=true&w=majority")
+import { Post } from './Models/post.js';
+
+// const app = require('../backend/app');
+
+// const bodyParser = require('body-parser');
+// const port = 3000;
+
+mongoose.connect("mongodb+srv://Group15:IT4830@finalcluster.lolpfr7.mongodb.net/?retryWrites=true&w=majority")
 .then(()=>{
   console.log('Connected to database')
 })
 .catch(()=>{
   console.log('connection error')
+});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Resquested-With, Content-Type, Accept"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PATCH, DELETE, OPTIONS"
+    );
+    next();
+});
+
+app.get('/', (req, res, next) => {
+  //res.send('Hello World!')
+  console.log('Middleware')
+  next()
 })
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+app.get('/', (req, res, next) => {
+  res.send('Hello from express')
+})
 
-// app.get('/', (req, res, next) => {
-//   //res.send('Hello World!')
-//   console.log('Middleware')
-//   next()
+app.post('/api/posts', (req,res,next)=>{
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content
+  });
+  console.log(post);
+  post.save();
+  res.status(201).json({
+    message: 'Post added successfully'
+  });
+});
+
+app.use('/api/posts', (req,res,next)=>{
+  Post.find()
+    .then(documents => {
+      res.status(200).json({
+        message: 'Posts fetched successfully',
+        posts: documents
+    });
+  });
+});
+
+// app.use('/api/posts', (req,res,next)=>{
+//   res.status(200).json({
+//     //message:"This is fetched data",
+//     TEST: test
+//   });
 // })
 
-// app.get('/', (req, res, next) => {
-//   res.send('Hello from express')
+// app.listen(3000, () => {
+//   console.log('Server listening on port 3000');
+// });
+
+// module.exports = app;
+export { app };
+
+// const mongoose = require('mongoose')
+
+// const PostModel = require('./Models/post')
+
+// mongoose.connect("mongodb+srv://Group15:<IT4830>@finalcluster.lolpfr7.mongodb.net/?retryWrites=true&w=majority")
+// .then(()=>{
+//   console.log('Connected to database')
+// })
+// .catch(()=>{
+//   console.log('connection error')
 // })
 
-// app.post("/api/posts", (req,res,next)=>{
+
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({extended:false}))
+
+// app.post("/api/posts",(req,res,next)=>{
 //   const post = new PostModel({
-//     title: req.boody.title,
+//     title: req.body.title,
 //     content: req.body.content
 //   })
 //   post.save()
 //   console.log(post)
-//   req.status(201).json({
-//     message: 'Post added successful'
+//   res.status(201).json({
+//     message:'Post added successful'
 //   });
 // })
 
@@ -49,48 +120,10 @@ app.use(bodyParser.urlencoded({extended:false}))
 //   });
 // });
 
-// app.use('/api/posts', (req,res,next)=>{
-//   const test = "test string"
+// const userSchema = new mongoose.Schema({
+//   email: String,
+//   password: String,
+// });
 
-//   res.status(200).json({
-//     //message:"This is fetched data",
-//     TEST: test
-//   });
-// })
+// const User = mongoose.model('User', userSchema);
 
-const userSchema = new mongoose.Schema({
-  email: String,
-  password: String,
-});
-
-const User = mongoose.model('User', userSchema);
-
-app.post('/register', async (req, res) => {
-  const { email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({
-    email,
-    password: hashedPassword,
-  });
-  await user.save();
-  res.status(200).send('User created');
-});
-
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(401).send('Invalid email or password');
-  }
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(401).send('Invalid email or password');
-  }
-  const token = jwt.sign({ userId: user._id }, 'my_secret_key');
-  res.status(200).send({ token });
-});
-
-app.listen(3000, () => console.log('Server started on port 3000'));
-
-
-module.exports = app;

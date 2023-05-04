@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { StartComponent } from './pages/start/start.component';
 import { DailyComponent } from './pages/daily/daily.component';
 import { WeeklyComponent } from './pages/weekly/weekly.component';
+// import { PostListComponent } from './post/post-list/post-list.component';
 
 const routes: Routes = [
   { path: '', component: StartComponent },
