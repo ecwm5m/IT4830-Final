@@ -1,8 +1,9 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
-postSchema = mongoose.Schema({
-  title: {type:String, required: true }
-  // content:{type:String, require: true}
-})
+const postSchema = mongoose.Schema({
+  title: { type: String, required: true },
+  content: { type: String, required: true }
+});
 
-module.exports = mongoose.model('Post', postSchema)
+export const Post = mongoose.model('Post', postSchema);
+
