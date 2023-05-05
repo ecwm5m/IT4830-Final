@@ -8,6 +8,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 #footer {
+  margin-top: 50px;
   position: absolute;
   bottom:0;
   width:100;
@@ -41,4 +42,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 100%;
   position: relative;
 
+}
+
+#listdiv {
+  margin-bottom: 100px;
 }
