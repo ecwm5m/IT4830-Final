@@ -1,4 +1,4 @@
-function getweatherweekly(){
+/*function getweatherweekly(){
   var city=document.getElementById("search").value;
   fetch("http://api.weatherstack.com/historical?access_key=2e67ddb608d0f7d5e5213848ead4f0b4&query="+city+"&units=f&historical_date=2023-05-03&hourly=1")
   .then(a=>a.json())
@@ -86,3 +86,4 @@ function getweather(){
 
   });
 }
+*/
