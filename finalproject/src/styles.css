@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+#footer {
+  position: absolute;
+  bottom:0;
+  width:100;
+  height:2.5rem;
+}
+
+#image {
+  border-radius: 5px;
+}
+
+#bigtitle {
+  background-color: lightgrey;
+  padding:3px;
+  margin:5px;
+}
+
+.navbarlink {
+  color: purple;
+  background-color: white;
+}
+
+#pagecontainer {
+  margin:5px;
+  padding: 5px;
+  background-color: lightgray;
+  position: relative;
+  min-height: 82vh;
+}
+
+.commentsection {
+  height: 100%;
+  position: relative;
+
+}
