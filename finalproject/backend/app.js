@@ -1,17 +1,9 @@
-// const express = require('express');
 import express from 'express';
 import mongoose from 'mongoose';
-
-const app = express();
-
 import bodyParser from 'body-parser';
-
 import { Post } from './Models/post.js';
 
-// const app = require('../backend/app');
-
-// const bodyParser = require('body-parser');
-// const port = 3000;
+const app = express();
 
 mongoose.connect("mongodb+srv://Group15:IT4830@finalcluster.lolpfr7.mongodb.net/?retryWrites=true&w=majority")
 .then(()=>{
@@ -28,23 +20,18 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Resquested-With, Content-Type, Accept"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PATCH, DELETE, OPTIONS"
-    );
-    next();
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+  );
+  next();
 });
 
 app.get('/', (req, res, next) => {
-  //res.send('Hello World!')
-  console.log('Middleware')
-  next()
-})
-
-app.get('/', (req, res, next) => {
   res.send('Hello from express')
+  console.log('Hello');
 })
 
 app.post('/api/posts', (req,res,next)=>{
@@ -53,13 +40,32 @@ app.post('/api/posts', (req,res,next)=>{
     content: req.body.content
   });
   console.log(post);
-  post.save();
-  res.status(201).json({
-    message: 'Post added successfully'
+  post.save().then(result => {
+    res.status(201).json({
+      message: 'Post added successfully',
+      postId: result._id
+    });
+  });
+});
+
+app.delete("/api/posts/:id", (req,res,next)=>{
+  console.log("Delete request received for post ID: ", req.params.id);
+  Post.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+    console.log("deleteOne called");
+    if(result.deletedCount === 1) {
+      res.status(200).json({ message: "Post deleted"});
+    } else {
+      res.status(404).json({ message: "Post not found"});
+    }
+  }).catch(error => {
+    console.log(error);
+    res.status(500).json({ message: "An error occurred while deleting the post"});
   });
 });
 
 app.use('/api/posts', (req,res,next)=>{
+  console.log('Posts Fetched');
   Post.find()
     .then(documents => {
       res.status(200).json({
@@ -69,61 +75,4 @@ app.use('/api/posts', (req,res,next)=>{
   });
 });
 
-// app.use('/api/posts', (req,res,next)=>{
-//   res.status(200).json({
-//     //message:"This is fetched data",
-//     TEST: test
-//   });
-// })
-
-// app.listen(3000, () => {
-//   console.log('Server listening on port 3000');
-// });
-
-// module.exports = app;
 export { app };
-
-// const mongoose = require('mongoose')
-
-// const PostModel = require('./Models/post')
-
-// mongoose.connect("mongodb+srv://Group15:<IT4830>@finalcluster.lolpfr7.mongodb.net/?retryWrites=true&w=majority")
-// .then(()=>{
-//   console.log('Connected to database')
-// })
-// .catch(()=>{
-//   console.log('connection error')
-// })
-
-
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({extended:false}))
-
-// app.post("/api/posts",(req,res,next)=>{
-//   const post = new PostModel({
-//     title: req.body.title,
-//     content: req.body.content
-//   })
-//   post.save()
-//   console.log(post)
-//   res.status(201).json({
-//     message:'Post added successful'
-//   });
-// })
-
-// app.get('/api/posts',(req,res,next)=>{
-//   PostModel.find().then(documents =>{
-//     req.status(200).json({
-//       message:"This is fetched data",
-//       posts: documents
-//     });
-//   });
-// });
-
-// const userSchema = new mongoose.Schema({
-//   email: String,
-//   password: String,
-// });
-
-// const User = mongoose.model('User', userSchema);
-
